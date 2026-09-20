@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Franja Morada - Centro de Estudiantes | Derecho UNLP</title>
+    <title>Franja Morada - Portal Estudiantil & Eventos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- QRCode.js Library for real dynamic QR Code generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
@@ -18,7 +20,6 @@
             font-family: 'Oswald', sans-serif;
         }
 
-        /* Repeating text background pattern to match image */
         .bg-watermark {
             background-color: #4A0E17;
             background-image: repeating-linear-gradient(
@@ -66,7 +67,6 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Header / Navigation -->
     <header class="bg-[#f8f9fa] border-b border-gray-200 sticky top-0 z-40 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <!-- Brand Logo Left -->
@@ -77,7 +77,7 @@
             </a>
 
             <!-- Navigation Links Right -->
-            <nav class="hidden md:flex items-center space-x-6 lg:space-x-8 font-semibold text-sm tracking-wide">
+            <nav class="hidden md:flex items-center space-x-5 lg:space-x-7 font-semibold text-sm tracking-wide">
                 <button onclick="showSection('inicio')" id="nav-inicio" class="text-blue-600 hover:text-blue-700 transition-colors uppercase py-1">
                     Inicio
                 </button>
@@ -93,14 +93,21 @@
 
                 <!-- Search Button -->
                 <button onclick="openSearchModal()" class="text-gray-800 hover:text-[#4A0E17] p-2 rounded-full hover:bg-gray-200 transition-all" title="Buscar">
-                    <i data-lucide="search" class="w-6 h-6 stroke-[2.5]"></i>
+                    <i data-lucide="search" class="w-5 h-5 stroke-[2.5]"></i>
+                </button>
+
+                <!-- Event Ticket Button Top Right -->
+                <button onclick="openTicketModal()" class="bg-[#4A0E17] hover:bg-[#380A12] text-white font-bold px-4 py-2.5 rounded-lg text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center gap-2 border border-yellow-500/30">
+                    <i data-lucide="ticket" class="w-4 h-4 text-yellow-400"></i>
+                    Comprar Entradas
                 </button>
             </nav>
 
-            <!-- Mobile Menu Toggle -->
+            <!-- Mobile Toggle -->
             <div class="flex items-center gap-2 md:hidden">
-                <button onclick="openSearchModal()" class="p-2 text-gray-800">
-                    <i data-lucide="search" class="w-6 h-6"></i>
+                <button onclick="openTicketModal()" class="bg-[#4A0E17] text-white p-2 rounded-lg text-xs font-bold flex items-center gap-1">
+                    <i data-lucide="ticket" class="w-4 h-4 text-yellow-400"></i>
+                    Entradas
                 </button>
                 <button onclick="toggleMobileMenu()" class="p-2 text-gray-800 focus:outline-none">
                     <i data-lucide="menu" class="w-7 h-7"></i>
@@ -114,56 +121,68 @@
             <button onclick="showSection('bibliografia'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 text-gray-700 font-semibold rounded-lg hover:bg-gray-100">BIBLIOGRAFIA</button>
             <button onclick="showSection('programas'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 text-gray-700 font-semibold rounded-lg hover:bg-gray-100">PROGRAMAS</button>
             <button onclick="showSection('quienes-somos'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 text-gray-700 font-semibold rounded-lg hover:bg-gray-100">¿Quienes Somos?</button>
+            <button onclick="openTicketModal(); toggleMobileMenu()" class="w-full text-center py-2.5 px-3 bg-[#4A0E17] text-white font-bold rounded-lg hover:bg-opacity-90 flex items-center justify-center gap-2">
+                <i data-lucide="ticket" class="w-4 h-4 text-yellow-400"></i>
+                Comprar Entradas - PEÑA FRANJA HOY
+            </button>
         </div>
     </header>
 
-    <!-- Main Content Dynamic Container -->
     <main class="flex-grow">
 
-        <!-- SECTION: INICIO (HERO SCREENSHOT REPLICA) -->
+        <!-- SECTION: INICIO (HERO BANNER) -->
         <section id="sec-inicio" class="block">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
-                <!-- Main Container replicating image -->
                 <div class="bg-watermark rounded-sm shadow-2xl relative min-h-[380px] sm:min-h-[460px] md:min-h-[500px] flex flex-col justify-center items-center text-center p-6 sm:p-12">
                     
-                    <!-- Watermark background simulation -->
                     <div class="watermark-text-grid select-none" aria-hidden="true">
-                        BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS
+                        BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS
                     </div>
 
-                    <!-- Overlay content -->
                     <div class="relative z-10 flex flex-col items-center justify-center my-auto">
-                        <!-- Main Bold Title matching image -->
                         <h1 class="font-oswald text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-white tracking-normal uppercase text-glow leading-none mb-6">
                             PAGINA WEB
                         </h1>
 
-                        <!-- Subtitle Logo Section matching image -->
                         <div class="text-white mt-2">
                             <h2 class="font-oswald text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight uppercase leading-tight">
                                 FRANJA MORADA
                             </h2>
                             <p class="text-xs sm:text-sm md:text-base font-normal tracking-wide text-gray-200 opacity-90">
-                                Centro de Estudiantes | Derecho | UNLP
+                                Portal Académico, Cultural y Estudiantil
                             </p>
                         </div>
                     </div>
 
-                    <!-- Side Indicator Dot matching image -->
                     <div class="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
                         <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-black rounded-full shadow-md"></span>
                     </div>
                 </div>
 
-                <!-- Quick Access Cards Below Hero -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+                <!-- Event Promo Banner -->
+                <div class="mt-8 bg-gradient-to-r from-[#4A0E17] via-[#5C121E] to-[#2B080E] rounded-xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 border border-yellow-500/20">
+                    <div class="space-y-2 text-center md:text-left">
+                        <span class="bg-yellow-400 text-black text-xs font-black uppercase px-3 py-1 rounded-full tracking-wider">Evento Exclusivo</span>
+                        <h3 class="font-oswald text-3xl sm:text-4xl font-bold tracking-wide text-white">PEÑA FRANJA HOY</h3>
+                        <p class="text-gray-200 text-sm max-w-xl">
+                            Interior del Complejo Papa Francisco, Presidencia Roque Sáenz Peña. Acceso con aforo limitado, verificación por QR y código de precinto digital.
+                        </p>
+                    </div>
+                    <button onclick="openTicketModal()" class="whitespace-nowrap bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-extrabold px-6 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 flex items-center gap-2 uppercase text-sm tracking-wider">
+                        <i data-lucide="ticket" class="w-5 h-5"></i>
+                        Adquirir Acceso Oficial
+                    </button>
+                </div>
+
+                <!-- Feature Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                     <div onclick="showSection('bibliografia')" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer flex items-center gap-4">
                         <div class="p-4 bg-purple-50 text-[#4A0E17] rounded-lg">
                             <i data-lucide="book-open" class="w-8 h-8"></i>
                         </div>
                         <div>
                             <h3 class="font-bold text-lg text-gray-900">Bibliografía Digital</h3>
-                            <p class="text-sm text-gray-500">Accedé a apuntes y resumenes por materia</p>
+                            <p class="text-sm text-gray-500">Accedé a apuntes y material de estudio</p>
                         </div>
                     </div>
 
@@ -173,17 +192,17 @@
                         </div>
                         <div>
                             <h3 class="font-bold text-lg text-gray-900">Programas de Estudio</h3>
-                            <p class="text-sm text-gray-500">Planes de cátedra y programas vigentes</p>
+                            <p class="text-sm text-gray-500">Planes de cátedra e información institucional</p>
                         </div>
                     </div>
 
-                    <div onclick="sendWhatsApp('Consulta General')" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer flex items-center gap-4">
-                        <div class="p-4 bg-green-50 text-green-600 rounded-lg">
-                            <i data-lucide="message-circle" class="w-8 h-8"></i>
+                    <div onclick="openTicketModal()" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer flex items-center gap-4">
+                        <div class="p-4 bg-yellow-50 text-amber-700 rounded-lg">
+                            <i data-lucide="sparkles" class="w-8 h-8"></i>
                         </div>
                         <div>
-                            <h3 class="font-bold text-lg text-gray-900">Consultas por WhatsApp</h3>
-                            <p class="text-sm text-gray-500">Escribinos directamente al centro</p>
+                            <h3 class="font-bold text-lg text-gray-900">Peña Universitaria</h3>
+                            <p class="text-sm text-gray-500">Reservas y acreditación privada en línea</p>
                         </div>
                     </div>
                 </div>
@@ -194,12 +213,10 @@
         <section id="sec-bibliografia" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             <div class="mb-8 border-b pb-4">
                 <h2 class="font-oswald text-4xl font-bold text-[#4A0E17] uppercase">Bibliografía Digital</h2>
-                <p class="text-gray-600">Encontrá el material de lectura obligatorio y complementario organizado por año de la carrera.</p>
+                <p class="text-gray-600">Material de lectura académica y guías de estudio oficial.</p>
             </div>
 
-            <!-- Subject Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Subject Item -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:border-[#4A0E17] transition-all">
                     <div class="bg-[#4A0E17] text-white p-4">
                         <span class="text-xs font-semibold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded">Primer Año</span>
@@ -208,42 +225,32 @@
                     <div class="p-5 space-y-3">
                         <div class="flex items-center justify-between text-sm py-2 border-b">
                             <span class="font-medium text-gray-700">Manual de Derecho Romano</span>
-                            <button onclick="sendWhatsApp('Bibliografía: Manual de Derecho Romano')" class="text-blue-600 hover:underline flex items-center gap-1">
-                                <i data-lucide="download" class="w-4 h-4"></i> Pedir PDF
-                            </button>
+                            <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-mono">PDF Disponible</span>
                         </div>
                         <div class="flex items-center justify-between text-sm py-2 border-b">
                             <span class="font-medium text-gray-700">Guía de Apuntes Cátedra 1</span>
-                            <button onclick="sendWhatsApp('Bibliografía: Guía Apuntes Cátedra 1 Romano')" class="text-blue-600 hover:underline flex items-center gap-1">
-                                <i data-lucide="download" class="w-4 h-4"></i> Pedir PDF
-                            </button>
+                            <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-mono">PDF Disponible</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Subject Item -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:border-[#4A0E17] transition-all">
                     <div class="bg-[#4A0E17] text-white p-4">
                         <span class="text-xs font-semibold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded">Segundo Año</span>
-                        <h3 class="font-bold text-xl mt-1">Derecho Civil I (Parte General)</h3>
+                        <h3 class="font-bold text-xl mt-1">Derecho Civil I</h3>
                     </div>
                     <div class="p-5 space-y-3">
                         <div class="flex items-center justify-between text-sm py-2 border-b">
                             <span class="font-medium text-gray-700">Código Civil y Comercial</span>
-                            <button onclick="sendWhatsApp('Bibliografía: Código Civil y Comercial')" class="text-blue-600 hover:underline flex items-center gap-1">
-                                <i data-lucide="download" class="w-4 h-4"></i> Pedir PDF
-                            </button>
+                            <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-mono">PDF Disponible</span>
                         </div>
                         <div class="flex items-center justify-between text-sm py-2 border-b">
                             <span class="font-medium text-gray-700">Resumen Fallos Obligatorios</span>
-                            <button onclick="sendWhatsApp('Bibliografía: Fallos Civil 1')" class="text-blue-600 hover:underline flex items-center gap-1">
-                                <i data-lucide="download" class="w-4 h-4"></i> Pedir PDF
-                            </button>
+                            <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-mono">PDF Disponible</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Subject Item -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:border-[#4A0E17] transition-all">
                     <div class="bg-[#4A0E17] text-white p-4">
                         <span class="text-xs font-semibold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded">Tercer Año</span>
@@ -252,15 +259,11 @@
                     <div class="p-5 space-y-3">
                         <div class="flex items-center justify-between text-sm py-2 border-b">
                             <span class="font-medium text-gray-700">Tratado de Derecho Penal</span>
-                            <button onclick="sendWhatsApp('Bibliografía: Tratado Penal I')" class="text-blue-600 hover:underline flex items-center gap-1">
-                                <i data-lucide="download" class="w-4 h-4"></i> Pedir PDF
-                            </button>
+                            <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-mono">PDF Disponible</span>
                         </div>
                         <div class="flex items-center justify-between text-sm py-2 border-b">
                             <span class="font-medium text-gray-700">Teoría del Delito - Guía</span>
-                            <button onclick="sendWhatsApp('Bibliografía: Teoría del Delito')" class="text-blue-600 hover:underline flex items-center gap-1">
-                                <i data-lucide="download" class="w-4 h-4"></i> Pedir PDF
-                            </button>
+                            <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-mono">PDF Disponible</span>
                         </div>
                     </div>
                 </div>
@@ -271,7 +274,7 @@
         <section id="sec-programas" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             <div class="mb-8 border-b pb-4">
                 <h2 class="font-oswald text-4xl font-bold text-[#4A0E17] uppercase">Programas de Cátedra</h2>
-                <p class="text-gray-600">Consultá los contenidos, correlatividades y criterios de evaluación oficial de la UNLP.</p>
+                <p class="text-gray-600">Planificación académica institucional y correlatividades.</p>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -281,39 +284,27 @@
                             <th class="p-4">Materia</th>
                             <th class="p-4">Cátedra</th>
                             <th class="p-4">Año</th>
-                            <th class="p-4 text-right">Programa</th>
+                            <th class="p-4 text-right">Estado</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 text-sm">
                         <tr class="hover:bg-gray-50">
                             <td class="p-4 font-semibold text-gray-900">Introducción al Derecho</td>
-                            <td class="p-4 text-gray-600">Cátedra 1 (Álvarez)</td>
+                            <td class="p-4 text-gray-600">Cátedra 1</td>
                             <td class="p-4 text-gray-600">1° Año</td>
-                            <td class="p-4 text-right">
-                                <button onclick="sendWhatsApp('Programa: Introducción al Derecho Cátedra 1')" class="px-3 py-1 bg-[#4A0E17] text-white rounded hover:bg-opacity-90 text-xs font-medium">
-                                    Solicitar
-                                </button>
-                            </td>
+                            <td class="p-4 text-right"><span class="text-xs bg-green-100 text-green-700 font-bold px-2.5 py-1 rounded-full">Vigente</span></td>
                         </tr>
                         <tr class="hover:bg-gray-50">
                             <td class="p-4 font-semibold text-gray-900">Derecho Constitucional</td>
-                            <td class="p-4 text-gray-600">Cátedra 2 (García)</td>
+                            <td class="p-4 text-gray-600">Cátedra 2</td>
                             <td class="p-4 text-gray-600">2° Año</td>
-                            <td class="p-4 text-right">
-                                <button onclick="sendWhatsApp('Programa: Derecho Constitucional Cátedra 2')" class="px-3 py-1 bg-[#4A0E17] text-white rounded hover:bg-opacity-90 text-xs font-medium">
-                                    Solicitar
-                                </button>
-                            </td>
+                            <td class="p-4 text-right"><span class="text-xs bg-green-100 text-green-700 font-bold px-2.5 py-1 rounded-full">Vigente</span></td>
                         </tr>
                         <tr class="hover:bg-gray-50">
                             <td class="p-4 font-semibold text-gray-900">Derecho Procesal I</td>
                             <td class="p-4 text-gray-600">Cátedra Única</td>
                             <td class="p-4 text-gray-600">3° Año</td>
-                            <td class="p-4 text-right">
-                                <button onclick="sendWhatsApp('Programa: Derecho Procesal I')" class="px-3 py-1 bg-[#4A0E17] text-white rounded hover:bg-opacity-90 text-xs font-medium">
-                                    Solicitar
-                                </button>
-                            </td>
+                            <td class="p-4 text-right"><span class="text-xs bg-green-100 text-green-700 font-bold px-2.5 py-1 rounded-full">Vigente</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -325,27 +316,27 @@
             <div class="bg-white rounded-2xl p-8 sm:p-12 shadow-sm border border-gray-200">
                 <h2 class="font-oswald text-4xl font-bold text-[#4A0E17] uppercase mb-4">¿Quiénes Somos?</h2>
                 <p class="text-lg text-gray-700 leading-relaxed mb-6">
-                    Somos la <strong>Franja Morada</strong>, conducción del Centro de Estudiantes de la Facultad de Ciencias Jurídicas y Sociales de la Universidad Nacional de La Plata (UNLP).
+                    Somos un espacio de organización académica, cultural y social dedicado a acompañar la trayectoria universitaria de los estudiantes.
                 </p>
                 <p class="text-gray-600 leading-relaxed mb-8">
-                    Trabajamos día a día para defender la educación pública, gratuita, laica y de calidad, acompañándote durante toda tu carrera universitaria con tutorías, apuntes, trámites y representación estudiantil.
+                    Promovemos la excelencia académica, la integración institucional y el desarrollo de eventos sociales y culturales exclusivos, garantizando siempre la máxima seguridad, transparencia y organización en todas nuestras actividades.
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-gray-100">
                     <div class="p-4 bg-gray-50 rounded-xl text-center">
                         <i data-lucide="graduation-cap" class="w-10 h-10 text-[#4A0E17] mx-auto mb-2"></i>
-                        <h3 class="font-bold text-gray-900">Acompañamiento</h3>
-                        <p class="text-xs text-gray-500 mt-1">Tutorías para ingresantes y estudiantes avanzados.</p>
+                        <h3 class="font-bold text-gray-900">Soporte Académico</h3>
+                        <p class="text-xs text-gray-500 mt-1">Acceso a bibliografía y material de estudio actualizado.</p>
                     </div>
                     <div class="p-4 bg-gray-50 rounded-xl text-center">
                         <i data-lucide="shield-check" class="w-10 h-10 text-[#4A0E17] mx-auto mb-2"></i>
-                        <h3 class="font-bold text-gray-900">Defensa de Derechos</h3>
-                        <p class="text-xs text-gray-500 mt-1">Representación gremial en los consejos de la facultad.</p>
+                        <h3 class="font-bold text-gray-900">Seguridad & Acreditación</h3>
+                        <p class="text-xs text-gray-500 mt-1">Sistemas de precinto digital para todos los eventos.</p>
                     </div>
                     <div class="p-4 bg-gray-50 rounded-xl text-center">
-                        <i data-lucide="heart-handshake" class="w-10 h-10 text-[#4A0E17] mx-auto mb-2"></i>
-                        <h3 class="font-bold text-gray-900">Permanencia</h3>
-                        <p class="text-xs text-gray-500 mt-1">Becas de apuntes y comedor universitario.</p>
+                        <i data-lucide="calendar" class="w-10 h-10 text-[#4A0E17] mx-auto mb-2"></i>
+                        <h3 class="font-bold text-gray-900">Encuentros Culturales</h3>
+                        <p class="text-xs text-gray-500 mt-1">Organización de la tradicional Peña Universitaria.</p>
                     </div>
                 </div>
             </div>
@@ -353,12 +344,136 @@
 
     </main>
 
-    <!-- Floating WhatsApp Button -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <button onclick="sendWhatsApp('Consulta rápida desde la web')" class="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl flex items-center gap-3 transition-all hover:scale-105 active:scale-95" title="Contactar por WhatsApp">
-            <i data-lucide="message-circle" class="w-7 h-7 fill-current"></i>
-            <span class="hidden sm:inline font-bold pr-2 text-sm">Consultar por WhatsApp</span>
-        </button>
+    <!-- MODAL: PEÑA FRANJA HOY TICKET PURCHASE -->
+    <div id="ticket-modal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden my-8 transform transition-all border border-gray-100">
+            
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-[#4A0E17] to-[#2B080E] p-6 text-white relative">
+                <button onclick="closeTicketModal()" class="absolute top-4 right-4 p-2 text-white/70 hover:text-white rounded-lg hover:bg-white/10 transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="bg-amber-400 text-gray-900 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full tracking-wider">
+                        Acreditación Exclusiva
+                    </span>
+                    <span class="text-xs text-amber-200 font-mono flex items-center gap-1">
+                        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Sistema de Seguridad Válido
+                    </span>
+                </div>
+
+                <h3 class="font-oswald text-3xl sm:text-4xl font-bold tracking-wide uppercase text-white">PEÑA FRANJA HOY</h3>
+                <p class="text-gray-300 text-xs sm:text-sm mt-1">Solicitud de Acceso Privado y Código de Precinto Digital</p>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 sm:p-8 space-y-6">
+                
+                <!-- Event Details Badge Block -->
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
+                    <div class="flex items-start gap-3">
+                        <div class="p-2 bg-purple-100 text-[#4A0E17] rounded-lg mt-0.5">
+                            <i data-lucide="map-pin" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="block text-gray-400 text-[11px] uppercase font-bold">Ubicación & Recinto</span>
+                            <span class="font-bold text-gray-800">Interior del Complejo Papa Francisco</span>
+                            <span class="block text-gray-500 text-xs">Sáenz Peña, Chaco</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                        <div class="p-2 bg-purple-100 text-[#4A0E17] rounded-lg mt-0.5">
+                            <i data-lucide="lock" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="block text-gray-400 text-[11px] uppercase font-bold">Protocolo de Control</span>
+                            <span class="font-bold text-gray-800">Entradas Privadas Autorizadas</span>
+                            <span class="block text-gray-500 text-xs">QR + Precinto Nominal Requerido</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Section (Before Confirmation) -->
+                <form id="ticket-form" onsubmit="generatePass(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Nombre Completo del Titular *</label>
+                        <input type="text" id="pass-name" required placeholder="Ej. Valentina Gómez" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#4A0E17] focus:border-transparent outline-none text-sm transition-all">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-700 mb-1">WhatsApp de Contacto *</label>
+                            <input type="tel" id="pass-phone" required placeholder="Ej. 3644123456" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#4A0E17] focus:border-transparent outline-none text-sm transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Cantidad de Accesos *</label>
+                            <select id="pass-[#4A0E17] qty" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#4A0E17] focus:border-transparent outline-none text-sm transition-all bg-white">
+                                <option value="1">1 Entrada Individual</option>
+                                <option value="2">2 Entradas</option>
+                                <option value="3">3 Entradas</option>
+                                <option value="4">4 Entradas (Máximo por titular)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="w-full bg-[#4A0E17] hover:bg-[#380A12] text-white font-bold py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                            <i data-lucide="shield-check" class="w-5 h-5 text-yellow-400"></i>
+                            Generar Solicitud & QR de Seguridad
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Ticket Pass Result Section (Hidden until submitted) -->
+                <div id="pass-result" class="hidden space-y-6 border-t pt-6">
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 text-center relative overflow-hidden">
+                        <div class="absolute -right-6 -bottom-6 opacity-10">
+                            <i data-lucide="shield" class="w-32 h-32 text-amber-900"></i>
+                        </div>
+
+                        <span class="inline-block bg-green-100 text-green-800 text-[10px] font-bold uppercase px-3 py-1 rounded-full mb-2">
+                            Acreditación Pre-Aprobada
+                        </span>
+                        
+                        <h4 class="font-oswald text-2xl font-bold text-gray-900 uppercase">PEÑA FRANJA HOY</h4>
+                        <p class="text-xs text-gray-600">Complejo Papa Francisco - Sáenz Peña, Chaco</p>
+
+                        <!-- Dynamic QR Code Container -->
+                        <div class="my-4 flex justify-center">
+                            <div id="qrcode-container" class="bg-white p-3 rounded-xl shadow-inner border border-gray-200 inline-block"></div>
+                        </div>
+
+                        <!-- Precinto Code & Security Details -->
+                        <div class="space-y-1">
+                            <p class="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Código de Precinto Único de Seguridad</p>
+                            <p id="display-precinto" class="font-mono text-lg font-black text-[#4A0E17] tracking-wider bg-white py-1 px-4 rounded border inline-block select-all">
+                                PRE-2026-SP-0000
+                            </p>
+                        </div>
+
+                        <div class="mt-4 text-xs text-gray-600 border-t border-amber-200/60 pt-3 flex flex-wrap justify-center gap-x-4 gap-y-1 font-medium">
+                            <span>Titular: <strong id="display-holder" class="text-gray-800">---</strong></span>
+                            <span>Pases: <strong id="display-qty" class="text-gray-800">1</strong></span>
+                            <span>Verificación: <strong class="text-green-700">QR Oficial Válido</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Direct WhatsApp Confirmation Button -->
+                    <div class="space-y-2">
+                        <button id="send-whatsapp-btn" onclick="sendTicketWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 rounded-xl text-sm uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-3">
+                            <i data-lucide="message-circle" class="w-6 h-6 fill-current"></i>
+                            Confirmar Reserva vía WhatsApp
+                        </button>
+                        <p class="text-[11px] text-center text-gray-400">
+                            * Al presionar el botón se abrirá WhatsApp con el código de precinto y los datos oficiales para finalizar el pago y coordinar el ingreso.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <!-- Search Modal -->
@@ -366,23 +481,19 @@
         <div class="bg-white w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden transform transition-all">
             <div class="p-4 border-b flex items-center gap-3">
                 <i data-lucide="search" class="w-6 h-6 text-gray-400"></i>
-                <input type="text" id="search-input" placeholder="Buscar resúmenes, materias o programas..." class="w-full text-lg outline-none text-gray-800 placeholder-gray-400">
+                <input type="text" id="search-input" placeholder="Buscar bibliografía, programas o eventos..." class="w-full text-lg outline-none text-gray-800 placeholder-gray-400">
                 <button onclick="closeSearchModal()" class="p-1 hover:bg-gray-100 rounded-lg text-gray-500">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
             <div class="p-4 max-h-80 overflow-y-auto space-y-2">
                 <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Sugerencias rápidas</p>
-                <button onclick="selectSearchResult('Derecho Romano')" class="w-full text-left p-3 hover:bg-purple-50 rounded-lg flex justify-between items-center text-sm font-medium text-gray-700">
-                    <span>Derecho Romano (Apuntes)</span>
+                <button onclick="closeSearchModal(); openTicketModal();" class="w-full text-left p-3 hover:bg-purple-50 rounded-lg flex justify-between items-center text-sm font-medium text-gray-700">
+                    <span class="font-bold text-[#4A0E17]">PEÑA FRANJA HOY - Comprar Entradas</span>
                     <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
                 </button>
-                <button onclick="selectSearchResult('Derecho Civil I')" class="w-full text-left p-3 hover:bg-purple-50 rounded-lg flex justify-between items-center text-sm font-medium text-gray-700">
-                    <span>Derecho Civil I (Programa)</span>
-                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
-                </button>
-                <button onclick="selectSearchResult('Inscripción a Materias')" class="w-full text-left p-3 hover:bg-purple-50 rounded-lg flex justify-between items-center text-sm font-medium text-gray-700">
-                    <span>Guía SIU Guaraní</span>
+                <button onclick="closeSearchModal(); showSection('bibliografia');" class="w-full text-left p-3 hover:bg-purple-50 rounded-lg flex justify-between items-center text-sm font-medium text-gray-700">
+                    <span>Bibliografía de materias</span>
                     <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
                 </button>
             </div>
@@ -392,8 +503,8 @@
     <!-- Footer -->
     <footer class="bg-gray-900 text-white mt-12 py-8 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="font-oswald text-xl font-bold tracking-wider mb-2">FRANJA MORADA DERECHO UNLP</p>
-            <p class="text-xs text-gray-400">Facultad de Ciencias Jurídicas y Sociales - Universidad Nacional de La Plata</p>
+            <p class="font-oswald text-xl font-bold tracking-wider mb-2">FRANJA MORADA - SÁENZ PEÑA</p>
+            <p class="text-xs text-gray-400">Portal de Servicios Académicos y Eventos Estudiantiles - Complejo Papa Francisco</p>
         </div>
     </footer>
 
@@ -401,17 +512,18 @@
         // Initialize Lucide Icons
         lucide.createIcons();
 
-        // Phone number configuration for Franja Morada WhatsApp
-        const WHATSAPP_NUMBER = "5492210000000"; // Configurar número de WhatsApp real aquí
+        // Phone number configuration for Franja Morada WhatsApp Ticket Sales
+        const WHATSAPP_EVENT_NUMBER = "5493644000000"; // Configurar número de WhatsApp oficial aquí
 
-        // Send WhatsApp Message Function
-        function sendWhatsApp(asunto) {
-            const mensaje = encodeURIComponent(`Hola Franja Morada! Quisiera hacer una consulta sobre: ${asunto}`);
-            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${mensaje}`;
-            window.open(url, '_blank');
-        }
+        // Global variables for active ticket order
+        let currentTicketData = {
+            name: '',
+            phone: '',
+            qty: '1',
+            precintoCode: ''
+        };
 
-        // Section Routing Handler
+        // Section Router
         function showSection(sectionId) {
             const sections = ['inicio', 'bibliografia', 'programas', 'quienes-somos'];
             sections.forEach(id => {
@@ -435,10 +547,83 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Mobile Menu Toggle
+        // Mobile Nav Toggle
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
+        }
+
+        // Ticket Modal Controls
+        function openTicketModal() {
+            document.getElementById('ticket-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeTicketModal() {
+            document.getElementById('ticket-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Generate Pass, QR Code, and Precinto
+        function generatePass(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('pass-name').value.trim();
+            const phone = document.getElementById('pass-phone').value.trim();
+            const qty = document.getElementById('pass-[#4A0E17] qty').value;
+
+            if (!name || !phone) return;
+
+            // Generate Unique Security Precinto Code
+            const randomHex = Math.floor(1000 + Math.random() * 9000);
+            const precintoCode = `PRE-2026-SP-${randomHex}`;
+
+            currentTicketData = { name, phone, qty, precintoCode };
+
+            // Update DOM text
+            document.getElementById('display-precinto').innerText = precintoCode;
+            document.getElementById('display-holder').innerText = name;
+            document.getElementById('display-qty').innerText = `${qty} entrada(s)`;
+
+            // Render Dynamic QR Code
+            const qrContainer = document.getElementById('qrcode-container');
+            qrContainer.innerHTML = ''; // Clear previous QR
+            
+            const qrText = `EVENT:PEÑA_FRANJA|LOC:COMPLEJO_PAPA_FRANCISCO|PRECINTO:${precintoCode}|TITULAR:${name}|QTY:${qty}`;
+            
+            new QRCode(qrContainer, {
+                text: qrText,
+                width: 140,
+                height: 140,
+                colorDark: "#4A0E17",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Hide Form & Show Pass Result
+            document.getElementById('ticket-form').classList.add('hidden');
+            document.getElementById('pass-result').classList.remove('hidden');
+            
+            // Re-initialize icons in newly shown elements
+            lucide.createIcons();
+        }
+
+        // Send Official Ticket Request via WhatsApp
+        function sendTicketWhatsApp() {
+            const { name, phone, qty, precintoCode } = currentTicketData;
+
+            const text = `*SOLICITUD DE ACCESO OFICIAL - PEÑA FRANJA HOY*%0A` +
+                         `----------------------------------%0A` +
+                         `*Ubicación:* Interior Complejo Papa Francisco (Sáenz Peña)%0A` +
+                         `*Código de Precinto Digital:* _${precintoCode}_%0A` +
+                         `*Titular de Reserva:* ${name}%0A` +
+                         `*Número de Contacto:* ${phone}%0A` +
+                         `*Cantidad de Entradas:* ${qty}%0A` +
+                         `----------------------------------%0A` +
+                         `_Presento esta solicitud autorizada y el código QR adjunto para confirmar mi reserva privada._`;
+
+            const url = `https://wa.me/${WHATSAPP_EVENT_NUMBER}?text=${text}`;
+            window.open(url, '_blank');
         }
 
         // Search Modal Functions
@@ -451,14 +636,12 @@
             document.getElementById('search-modal').classList.add('hidden');
         }
 
-        function selectSearchResult(query) {
-            closeSearchModal();
-            sendWhatsApp(`Búsqueda: ${query}`);
-        }
-
-        // Close search on ESC key
+        // Keyboard Shortcut ESC to close modals
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeSearchModal();
+            if (e.key === 'Escape') {
+                closeSearchModal();
+                closeTicketModal();
+            }
         });
     </script>
 </body>
