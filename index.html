@@ -409,7 +409,7 @@
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Cantidad de Accesos *</label>
-                            <select id="pass-[#4A0E17] qty" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#4A0E17] focus:border-transparent outline-none text-sm transition-all bg-white">
+                            <select id="pass-qty" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#4A0E17] focus:border-transparent outline-none text-sm transition-all bg-white">
                                 <option value="1">1 Entrada Individual</option>
                                 <option value="2">2 Entradas</option>
                                 <option value="3">3 Entradas</option>
@@ -419,9 +419,9 @@
                     </div>
 
                     <div class="pt-2">
-                        <button type="submit" class="w-full bg-[#4A0E17] hover:bg-[#380A12] text-white font-bold py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                        <button type="submit" id="btn-submit-pass" class="w-full bg-[#4A0E17] hover:bg-[#380A12] text-white font-bold py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2">
                             <i data-lucide="shield-check" class="w-5 h-5 text-yellow-400"></i>
-                            Generar Solicitud & QR de Seguridad
+                            <span>Generar Solicitud & Recibir por WhatsApp</span>
                         </button>
                     </div>
                 </form>
@@ -433,8 +433,8 @@
                             <i data-lucide="shield" class="w-32 h-32 text-amber-900"></i>
                         </div>
 
-                        <span class="inline-block bg-green-100 text-green-800 text-[10px] font-bold uppercase px-3 py-1 rounded-full mb-2">
-                            Acreditación Pre-Aprobada
+                        <span id="whatsapp-status-badge" class="inline-block bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase px-3 py-1 rounded-full mb-2">
+                            Mensaje Enviado a WhatsApp 📱
                         </span>
                         
                         <h4 class="font-oswald text-2xl font-bold text-gray-900 uppercase">PEÑA FRANJA HOY</h4>
@@ -460,15 +460,10 @@
                         </div>
                     </div>
 
-                    <!-- Direct WhatsApp Confirmation Button -->
-                    <div class="space-y-2">
-                        <button id="send-whatsapp-btn" onclick="sendTicketWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 rounded-xl text-sm uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-3">
-                            <i data-lucide="message-circle" class="w-6 h-6 fill-current"></i>
-                            Confirmar Reserva vía WhatsApp
-                        </button>
-                        <p class="text-[11px] text-center text-gray-400">
-                            * Al presionar el botón se abrirá WhatsApp con el código de precinto y los datos oficiales para finalizar el pago y coordinar el ingreso.
-                        </p>
+                    <!-- Direct WhatsApp Info Box -->
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-center space-y-1">
+                        <p class="text-xs font-bold text-emerald-900">¡Entrada enviada a tu celular!</p>
+                        <p class="text-[11px] text-emerald-700">Revisa tu aplicación de WhatsApp. Hemos enviado los detalles de tu entrada y tu código de precinto oficial.</p>
                     </div>
                 </div>
 
@@ -512,8 +507,8 @@
         // Initialize Lucide Icons
         lucide.createIcons();
 
-        // Phone number configuration for Franja Morada WhatsApp Ticket Sales
-        const WHATSAPP_EVENT_NUMBER = "5493644000000"; // Configurar número de WhatsApp oficial aquí
+        // Endpoint del backend en Vercel
+        const VERCEL_API_URL = "https://pagina-mu-lemon.vercel.app/api/enviar-whatsapp";
 
         // Global variables for active ticket order
         let currentTicketData = {
@@ -564,15 +559,20 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Generate Pass, QR Code, and Precinto
-        function generatePass(e) {
+        // Generate Pass, QR Code, and Send WhatsApp Request to Vercel
+        async function generatePass(e) {
             e.preventDefault();
 
+            const submitBtn = document.getElementById('btn-submit-pass');
             const name = document.getElementById('pass-name').value.trim();
             const phone = document.getElementById('pass-phone').value.trim();
-            const qty = document.getElementById('pass-[#4A0E17] qty').value;
+            const qty = document.getElementById('pass-qty').value;
 
             if (!name || !phone) return;
+
+            // Bloquear botón mientras procesa
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span class="animate-pulse">Enviando mensaje por WhatsApp...</span>`;
 
             // Generate Unique Security Precinto Code
             const randomHex = Math.floor(1000 + Math.random() * 9000);
@@ -600,30 +600,41 @@
                 correctLevel: QRCode.CorrectLevel.H
             });
 
-            // Hide Form & Show Pass Result
+            // Petición al Backend en Vercel
+            try {
+                const response = await fetch(VERCEL_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nombre: name,
+                        telefono: phone,
+                        cantidad: qty,
+                        codigoEntrada: precintoCode
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    console.log('Mensaje enviado exitosamente vía Vercel / Green API');
+                } else {
+                    console.warn('Servidor respondió con advertencia:', data);
+                }
+            } catch (err) {
+                console.error('Error al conectarse con Vercel:', err);
+            }
+
+            // Restablecer botón y mostrar resultado
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i data-lucide="shield-check" class="w-5 h-5 text-yellow-400"></i><span>Generar Solicitud & Recibir por WhatsApp</span>`;
+
             document.getElementById('ticket-form').classList.add('hidden');
             document.getElementById('pass-result').classList.remove('hidden');
             
             // Re-initialize icons in newly shown elements
             lucide.createIcons();
-        }
-
-        // Send Official Ticket Request via WhatsApp
-        function sendTicketWhatsApp() {
-            const { name, phone, qty, precintoCode } = currentTicketData;
-
-            const text = `*SOLICITUD DE ACCESO OFICIAL - PEÑA FRANJA HOY*%0A` +
-                         `----------------------------------%0A` +
-                         `*Ubicación:* Interior Complejo Papa Francisco (Sáenz Peña)%0A` +
-                         `*Código de Precinto Digital:* _${precintoCode}_%0A` +
-                         `*Titular de Reserva:* ${name}%0A` +
-                         `*Número de Contacto:* ${phone}%0A` +
-                         `*Cantidad de Entradas:* ${qty}%0A` +
-                         `----------------------------------%0A` +
-                         `_Presento esta solicitud autorizada y el código QR adjunto para confirmar mi reserva privada._`;
-
-            const url = `https://wa.me/${WHATSAPP_EVENT_NUMBER}?text=${text}`;
-            window.open(url, '_blank');
         }
 
         // Search Modal Functions
