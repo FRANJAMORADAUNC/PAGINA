@@ -463,10 +463,10 @@
 
                     <!-- Open QR Image Link Button -->
                     <div class="space-y-2">
-                        <button onclick="openQRImageWindow()" class="w-full bg-[#4A0E17] hover:bg-[#380A12] text-white font-extrabold py-4 rounded-xl text-sm uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-3">
+                        <a id="qr-image-btn" href="http://imgfz.com/i/QFrALi6.png" target="_blank" class="w-full bg-[#4A0E17] hover:bg-[#380A12] text-white font-extrabold py-4 rounded-xl text-sm uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-3 text-center">
                             <i data-lucide="external-link" class="w-5 h-5 text-yellow-400"></i>
                             Ver Imagen de QR en Nueva Ventana
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -510,7 +510,7 @@
         // Initialize Lucide Icons
         lucide.createIcons();
 
-        // AQUÍ PUEDES CAMBIAR EL LINK DE LA IMAGEN QR QUE QUIERAS ABRIR
+        // Enlace oficial directo de la imagen del QR
         const QR_IMAGE_URL = "http://imgfz.com/i/QFrALi6.png"; 
 
         // Global variables for active ticket order
@@ -608,7 +608,7 @@
             document.getElementById('ticket-form').classList.add('hidden');
             document.getElementById('pass-result').classList.remove('hidden');
 
-            // Abrir la imagen en una nueva pestaña
+            // Intentar abrir la pestaña automáticamente
             openQRImageWindow();
             
             // Re-initialize icons in newly shown elements
