@@ -461,16 +461,33 @@
                         </div>
                     </div>
 
-                    <!-- Open QR Image Link Button -->
+                    <!-- Open QR Image Pop-up Button -->
                     <div class="space-y-2">
-                        <a id="qr-image-btn" href="http://imgfz.com/i/QFrALi6.png" target="_blank" class="w-full bg-[#4A0E17] hover:bg-[#380A12] text-white font-extrabold py-4 rounded-xl text-sm uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-3 text-center">
-                            <i data-lucide="external-link" class="w-5 h-5 text-yellow-400"></i>
-                            Ver Imagen de QR en Nueva Ventana
-                        </a>
+                        <button onclick="openQRPopup()" class="w-full bg-[#4A0E17] hover:bg-[#380A12] text-white font-extrabold py-4 rounded-xl text-sm uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-3 text-center">
+                            <i data-lucide="qr-code" class="w-5 h-5 text-yellow-400"></i>
+                            Ver Imagen de QR en Pantalla
+                        </button>
                     </div>
                 </div>
 
             </div>
+        </div>
+    </div>
+
+    <!-- POP-UP OVERLAY FOR QR IMAGE (SUPERPUESTO ARRIBA DE TODO) -->
+    <div id="qr-image-popup" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white p-6 rounded-2xl shadow-2xl max-w-sm w-full relative flex flex-col items-center text-center space-y-4 border border-gray-200 animate-in fade-in zoom-in duration-200">
+            <button onclick="closeQRPopup()" class="absolute top-3 right-3 p-2 text-gray-400 hover:text-gray-800 rounded-full hover:bg-gray-100 transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <h4 class="font-oswald text-xl font-bold text-[#4A0E17] uppercase pt-2">Código QR Oficial</h4>
+            <div class="bg-white p-2 rounded-xl shadow-inner border border-gray-200">
+                <img src="http://imgfz.com/i/QFrALi6.png" alt="Código QR Entrada" class="w-64 h-64 object-contain rounded-lg">
+            </div>
+            <p class="text-xs text-gray-500 font-medium">Presenta este código en el ingreso del evento.</p>
+            <button onclick="closeQRPopup()" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-2.5 rounded-lg text-xs uppercase tracking-wider transition-all">
+                Cerrar
+            </button>
         </div>
     </div>
 
@@ -509,9 +526,6 @@
     <script>
         // Initialize Lucide Icons
         lucide.createIcons();
-
-        // Enlace oficial directo de la imagen del QR
-        const QR_IMAGE_URL = "http://imgfz.com/i/QFrALi6.png"; 
 
         // Global variables for active ticket order
         let currentTicketData = {
@@ -562,12 +576,16 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Function to open QR Image in a new window/tab
-        function openQRImageWindow() {
-            window.open(QR_IMAGE_URL, '_blank');
+        // Pop-up Image Overlay Controls
+        function openQRPopup() {
+            document.getElementById('qr-image-popup').classList.remove('hidden');
         }
 
-        // Generate Pass, Render QR Code and Open Image Window
+        function closeQRPopup() {
+            document.getElementById('qr-image-popup').classList.add('hidden');
+        }
+
+        // Generate Pass, Render QR Code and Show Pop-up
         function generatePass(e) {
             e.preventDefault();
 
@@ -608,8 +626,8 @@
             document.getElementById('ticket-form').classList.add('hidden');
             document.getElementById('pass-result').classList.remove('hidden');
 
-            // Intentar abrir la pestaña automáticamente
-            openQRImageWindow();
+            // Abrir automáticamente el Pop-up superpuesto con la imagen
+            openQRPopup();
             
             // Re-initialize icons in newly shown elements
             lucide.createIcons();
@@ -630,6 +648,7 @@
             if (e.key === 'Escape') {
                 closeSearchModal();
                 closeTicketModal();
+                closeQRPopup();
             }
         });
     </script>
