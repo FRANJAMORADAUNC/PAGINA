@@ -395,7 +395,7 @@
                     </div>
                 </div>
 
-                <!-- Form Section (Before Confirmation) -->
+                <!-- Form Section -->
                 <form id="ticket-form" onsubmit="generatePass(event)" class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Nombre Completo del Titular *</label>
@@ -425,50 +425,6 @@
                         </button>
                     </div>
                 </form>
-
-                <!-- Ticket Pass Result Section (Hidden until submitted) -->
-                <div id="pass-result" class="hidden space-y-6 border-t pt-6">
-                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 text-center relative overflow-hidden">
-                        <div class="absolute -right-6 -bottom-6 opacity-10">
-                            <i data-lucide="shield" class="w-32 h-32 text-amber-900"></i>
-                        </div>
-
-                        <span id="status-badge" class="inline-block bg-green-100 text-green-800 text-[10px] font-bold uppercase px-3 py-1 rounded-full mb-2">
-                            Acreditación Pre-Aprobada
-                        </span>
-                        
-                        <h4 class="font-oswald text-2xl font-bold text-gray-900 uppercase">PEÑA FRANJA HOY</h4>
-                        <p class="text-xs text-gray-600">Complejo Papa Francisco - Sáenz Peña, Chaco</p>
-
-                        <!-- Dynamic QR Code Container -->
-                        <div class="my-4 flex justify-center">
-                            <div id="qrcode-container" class="bg-white p-3 rounded-xl shadow-inner border border-gray-200 inline-block"></div>
-                        </div>
-
-                        <!-- Precinto Code & Security Details -->
-                        <div class="space-y-1">
-                            <p class="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Código de Precinto Único de Seguridad</p>
-                            <p id="display-precinto" class="font-mono text-lg font-black text-[#4A0E17] tracking-wider bg-white py-1 px-4 rounded border inline-block select-all">
-                                PRE-2026-SP-0000
-                            </p>
-                        </div>
-
-                        <div class="mt-4 text-xs text-gray-600 border-t border-amber-200/60 pt-3 flex flex-wrap justify-center gap-x-4 gap-y-1 font-medium">
-                            <span>Titular: <strong id="display-holder" class="text-gray-800">---</strong></span>
-                            <span>Correo: <strong id="display-email" class="text-gray-800">---</strong></span>
-                            <span>Pases: <strong id="display-qty" class="text-gray-800">1</strong></span>
-                            <span>Verificación: <strong class="text-green-700">QR Oficial Válido</strong></span>
-                        </div>
-                    </div>
-
-                    <!-- Open QR Image Pop-up Button -->
-                    <div class="space-y-2">
-                        <button onclick="openQRPopup()" class="w-full bg-[#4A0E17] hover:bg-[#380A12] text-white font-extrabold py-4 rounded-xl text-sm uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-3 text-center">
-                            <i data-lucide="qr-code" class="w-5 h-5 text-yellow-400"></i>
-                            Ver Imagen de QR en Pantalla
-                        </button>
-                    </div>
-                </div>
 
             </div>
         </div>
@@ -527,14 +483,6 @@
         // Initialize Lucide Icons
         lucide.createIcons();
 
-        // Global variables for active ticket order
-        let currentTicketData = {
-            name: '',
-            email: '',
-            qty: '1',
-            precintoCode: ''
-        };
-
         // Section Router
         function showSection(sectionId) {
             const sections = ['inicio', 'bibliografia', 'programas', 'quienes-somos'];
@@ -579,57 +527,30 @@
         // Pop-up Image Overlay Controls
         function openQRPopup() {
             document.getElementById('qr-image-popup').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeQRPopup() {
             document.getElementById('qr-image-popup').classList.add('hidden');
+            document.body.style.overflow = 'auto';
         }
 
-        // Generate Pass, Render QR Code and Show Pop-up
+        // Generate Pass and Directly Display QR Image Pop-up
         function generatePass(e) {
             e.preventDefault();
 
             const name = document.getElementById('pass-name').value.trim();
             const email = document.getElementById('pass-email').value.trim();
-            const qty = document.getElementById('pass-qty').value;
 
             if (!name || !email) return;
 
-            // Generate Unique Security Precinto Code
-            const randomHex = Math.floor(1000 + Math.random() * 9000);
-            const precintoCode = `PRE-2026-SP-${randomHex}`;
+            // Cierra la pestaña de compra
+            closeTicketModal();
 
-            currentTicketData = { name, email, qty, precintoCode };
-
-            // Update DOM text
-            document.getElementById('display-precinto').innerText = precintoCode;
-            document.getElementById('display-holder').innerText = name;
-            document.getElementById('display-email').innerText = email;
-            document.getElementById('display-qty').innerText = `${qty} entrada(s)`;
-
-            // Render Dynamic QR Code
-            const qrContainer = document.getElementById('qrcode-container');
-            qrContainer.innerHTML = ''; // Clear previous QR
-            
-            const qrText = `EVENT:PEÑA_FRANJA|LOC:COMPLEJO_PAPA_FRANCISCO|PRECINTO:${precintoCode}|TITULAR:${name}|EMAIL:${email}|QTY:${qty}`;
-            
-            new QRCode(qrContainer, {
-                text: qrText,
-                width: 140,
-                height: 140,
-                colorDark: "#4A0E17",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
-
-            // Hide Form & Show Pass Result
-            document.getElementById('ticket-form').classList.add('hidden');
-            document.getElementById('pass-result').classList.remove('hidden');
-
-            // Abrir automáticamente el Pop-up superpuesto con la imagen
+            // Abre únicamente el pop-up de la imagen QR
             openQRPopup();
             
-            // Re-initialize icons in newly shown elements
+            // Re-initialize icons
             lucide.createIcons();
         }
 
