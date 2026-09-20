@@ -404,8 +404,8 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold uppercase text-gray-700 mb-1">WhatsApp de Contacto *</label>
-                            <input type="tel" id="pass-phone" required placeholder="Ej. 3644123456" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#4A0E17] focus:border-transparent outline-none text-sm transition-all">
+                            <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Correo Electrónico *</label>
+                            <input type="email" id="pass-email" required placeholder="ejemplo@correo.com" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#4A0E17] focus:border-transparent outline-none text-sm transition-all">
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Cantidad de Accesos *</label>
@@ -420,8 +420,8 @@
 
                     <div class="pt-2">
                         <button type="submit" id="btn-submit-pass" class="w-full bg-[#4A0E17] hover:bg-[#380A12] text-white font-bold py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2">
-                            <i data-lucide="shield-check" class="w-5 h-5 text-yellow-400"></i>
-                            <span>Generar Solicitud & Recibir por WhatsApp</span>
+                            <i data-lucide="qr-code" class="w-5 h-5 text-yellow-400"></i>
+                            <span>Generar Solicitud & Código QR</span>
                         </button>
                     </div>
                 </form>
@@ -433,8 +433,8 @@
                             <i data-lucide="shield" class="w-32 h-32 text-amber-900"></i>
                         </div>
 
-                        <span id="whatsapp-status-badge" class="inline-block bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase px-3 py-1 rounded-full mb-2">
-                            Mensaje Enviado a WhatsApp 📱
+                        <span id="status-badge" class="inline-block bg-green-100 text-green-800 text-[10px] font-bold uppercase px-3 py-1 rounded-full mb-2">
+                            Acreditación Pre-Aprobada
                         </span>
                         
                         <h4 class="font-oswald text-2xl font-bold text-gray-900 uppercase">PEÑA FRANJA HOY</h4>
@@ -455,15 +455,18 @@
 
                         <div class="mt-4 text-xs text-gray-600 border-t border-amber-200/60 pt-3 flex flex-wrap justify-center gap-x-4 gap-y-1 font-medium">
                             <span>Titular: <strong id="display-holder" class="text-gray-800">---</strong></span>
+                            <span>Correo: <strong id="display-email" class="text-gray-800">---</strong></span>
                             <span>Pases: <strong id="display-qty" class="text-gray-800">1</strong></span>
                             <span>Verificación: <strong class="text-green-700">QR Oficial Válido</strong></span>
                         </div>
                     </div>
 
-                    <!-- Direct WhatsApp Info Box -->
-                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-center space-y-1">
-                        <p class="text-xs font-bold text-emerald-900">¡Entrada enviada a tu celular!</p>
-                        <p class="text-[11px] text-emerald-700">Revisa tu aplicación de WhatsApp. Hemos enviado los detalles de tu entrada y tu código de precinto oficial.</p>
+                    <!-- Open QR Image Link Button -->
+                    <div class="space-y-2">
+                        <button onclick="openQRImageWindow()" class="w-full bg-[#4A0E17] hover:bg-[#380A12] text-white font-extrabold py-4 rounded-xl text-sm uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-3">
+                            <i data-lucide="external-link" class="w-5 h-5 text-yellow-400"></i>
+                            Ver Imagen de QR en Nueva Ventana
+                        </button>
                     </div>
                 </div>
 
@@ -507,13 +510,13 @@
         // Initialize Lucide Icons
         lucide.createIcons();
 
-        // Endpoint del backend en Vercel
-        const VERCEL_API_URL = "https://pagina-mu-lemon.vercel.app/api/enviar-whatsapp";
+        // AQUÍ PUEDES CAMBIAR EL LINK DE LA IMAGEN QR QUE QUIERAS ABRIR
+        const QR_IMAGE_URL = "https://i.ibb.co/v32k322/qr-code.png"; 
 
         // Global variables for active ticket order
         let currentTicketData = {
             name: '',
-            phone: '',
+            email: '',
             qty: '1',
             precintoCode: ''
         };
@@ -559,37 +562,38 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Generate Pass, QR Code, and Send WhatsApp Request to Vercel
-        async function generatePass(e) {
+        // Function to open QR Image in a new window/tab
+        function openQRImageWindow() {
+            window.open(QR_IMAGE_URL, '_blank');
+        }
+
+        // Generate Pass, Render QR Code and Open Image Window
+        function generatePass(e) {
             e.preventDefault();
 
-            const submitBtn = document.getElementById('btn-submit-pass');
             const name = document.getElementById('pass-name').value.trim();
-            const phone = document.getElementById('pass-phone').value.trim();
+            const email = document.getElementById('pass-email').value.trim();
             const qty = document.getElementById('pass-qty').value;
 
-            if (!name || !phone) return;
-
-            // Bloquear botón mientras procesa
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `<span class="animate-pulse">Enviando mensaje por WhatsApp...</span>`;
+            if (!name || !email) return;
 
             // Generate Unique Security Precinto Code
             const randomHex = Math.floor(1000 + Math.random() * 9000);
             const precintoCode = `PRE-2026-SP-${randomHex}`;
 
-            currentTicketData = { name, phone, qty, precintoCode };
+            currentTicketData = { name, email, qty, precintoCode };
 
             // Update DOM text
             document.getElementById('display-precinto').innerText = precintoCode;
             document.getElementById('display-holder').innerText = name;
+            document.getElementById('display-email').innerText = email;
             document.getElementById('display-qty').innerText = `${qty} entrada(s)`;
 
             // Render Dynamic QR Code
             const qrContainer = document.getElementById('qrcode-container');
             qrContainer.innerHTML = ''; // Clear previous QR
             
-            const qrText = `EVENT:PEÑA_FRANJA|LOC:COMPLEJO_PAPA_FRANCISCO|PRECINTO:${precintoCode}|TITULAR:${name}|QTY:${qty}`;
+            const qrText = `EVENT:PEÑA_FRANJA|LOC:COMPLEJO_PAPA_FRANCISCO|PRECINTO:${precintoCode}|TITULAR:${name}|EMAIL:${email}|QTY:${qty}`;
             
             new QRCode(qrContainer, {
                 text: qrText,
@@ -600,38 +604,12 @@
                 correctLevel: QRCode.CorrectLevel.H
             });
 
-            // Petición al Backend en Vercel
-            try {
-                const response = await fetch(VERCEL_API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        nombre: name,
-                        telefono: phone,
-                        cantidad: qty,
-                        codigoEntrada: precintoCode
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    console.log('Mensaje enviado exitosamente vía Vercel / Green API');
-                } else {
-                    console.warn('Servidor respondió con advertencia:', data);
-                }
-            } catch (err) {
-                console.error('Error al conectarse con Vercel:', err);
-            }
-
-            // Restablecer botón y mostrar resultado
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = `<i data-lucide="shield-check" class="w-5 h-5 text-yellow-400"></i><span>Generar Solicitud & Recibir por WhatsApp</span>`;
-
+            // Hide Form & Show Pass Result
             document.getElementById('ticket-form').classList.add('hidden');
             document.getElementById('pass-result').classList.remove('hidden');
+
+            // Abrir la imagen en una nueva pestaña
+            openQRImageWindow();
             
             // Re-initialize icons in newly shown elements
             lucide.createIcons();
