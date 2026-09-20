@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Franja Morada - Centro de Estudiantes | Derecho UNLP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f4f5f8;
+            color: #1a1a1a;
+        }
+        
+        .font-oswald {
+            font-family: 'Oswald', sans-serif;
+        }
+
+        /* Repeating text background pattern to match image */
+        .bg-watermark {
+            background-color: #4A0E17;
+            background-image: repeating-linear-gradient(
+                -45deg,
+                rgba(0, 0, 0, 0.25),
+                rgba(0, 0, 0, 0.25) 1px,
+                transparent 0px,
+                transparent 40px
+            );
+            position: relative;
+            overflow: hidden;
+        }
+
+        .watermark-text-grid {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-wrap: wrap;
+            content-visibility: auto;
+            opacity: 0.12;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.05em;
+            line-height: 1.1;
+            user-select: none;
+            pointer-events: none;
+            word-break: break-all;
+            white-space: normal;
+        }
+
+        .text-glow {
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .brand-purple {
+            color: #4A0E17;
+        }
+
+        .bg-brand-purple {
+            background-color: #4A0E17;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header / Navigation -->
+    <header class="bg-[#f8f9fa] border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo Left -->
+            <a href="#" onclick="showSection('inicio')" class="flex items-center gap-2 group">
+                <span class="font-oswald text-3xl sm:text-4xl font-bold tracking-tight text-[#4A0E17] group-hover:opacity-90 transition-opacity">
+                    FRANJA MORADA
+                </span>
+            </a>
+
+            <!-- Navigation Links Right -->
+            <nav class="hidden md:flex items-center space-x-6 lg:space-x-8 font-semibold text-sm tracking-wide">
+                <button onclick="showSection('inicio')" id="nav-inicio" class="text-blue-600 hover:text-blue-700 transition-colors uppercase py-1">
+                    Inicio
+                </button>
+                <button onclick="showSection('bibliografia')" id="nav-bibliografia" class="text-gray-700 hover:text-[#4A0E17] transition-colors uppercase py-1">
+                    BIBLIOGRAFIA
+                </button>
+                <button onclick="showSection('programas')" id="nav-programas" class="text-gray-700 hover:text-[#4A0E17] transition-colors uppercase py-1">
+                    PROGRAMAS
+                </button>
+                <button onclick="showSection('quienes-somos')" id="nav-quienes-somos" class="text-gray-700 hover:text-[#4A0E17] transition-colors uppercase py-1">
+                    ¿Quienes Somos?
+                </button>
+
+                <!-- Search Button -->
+                <button onclick="openSearchModal()" class="text-gray-800 hover:text-[#4A0E17] p-2 rounded-full hover:bg-gray-200 transition-all" title="Buscar">
+                    <i data-lucide="search" class="w-6 h-6 stroke-[2.5]"></i>
+                </button>
+            </nav>
+
+            <!-- Mobile Menu Toggle -->
+            <div class="flex items-center gap-2 md:hidden">
+                <button onclick="openSearchModal()" class="p-2 text-gray-800">
+                    <i data-lucide="search" class="w-6 h-6"></i>
+                </button>
+                <button onclick="toggleMobileMenu()" class="p-2 text-gray-800 focus:outline-none">
+                    <i data-lucide="menu" class="w-7 h-7"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Nav -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-4 space-y-2">
+            <button onclick="showSection('inicio'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 text-blue-600 font-bold rounded-lg hover:bg-gray-100">Inicio</button>
+            <button onclick="showSection('bibliografia'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 text-gray-700 font-semibold rounded-lg hover:bg-gray-100">BIBLIOGRAFIA</button>
+            <button onclick="showSection('programas'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 text-gray-700 font-semibold rounded-lg hover:bg-gray-100">PROGRAMAS</button>
+            <button onclick="showSection('quienes-somos'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 text-gray-700 font-semibold rounded-lg hover:bg-gray-100">¿Quienes Somos?</button>
+        </div>
+    </header>
+
+    <!-- Main Content Dynamic Container -->
+    <main class="flex-grow">
+
+        <!-- SECTION: INICIO (HERO SCREENSHOT REPLICA) -->
+        <section id="sec-inicio" class="block">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+                <!-- Main Container replicating image -->
+                <div class="bg-watermark rounded-sm shadow-2xl relative min-h-[380px] sm:min-h-[460px] md:min-h-[500px] flex flex-col justify-center items-center text-center p-6 sm:p-12">
+                    
+                    <!-- Watermark background simulation -->
+                    <div class="watermark-text-grid select-none" aria-hidden="true">
+                        BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS BIENVENIDOS
+                    </div>
+
+                    <!-- Overlay content -->
+                    <div class="relative z-10 flex flex-col items-center justify-center my-auto">
+                        <!-- Main Bold Title matching image -->
+                        <h1 class="font-oswald text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-white tracking-normal uppercase text-glow leading-none mb-6">
+                            PAGINA WEB
+                        </h1>
+
+                        <!-- Subtitle Logo Section matching image -->
+                        <div class="text-white mt-2">
+                            <h2 class="font-oswald text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight uppercase leading-tight">
+                                FRANJA MORADA
+                            </h2>
+                            <p class="text-xs sm:text-sm md:text-base font-normal tracking-wide text-gray-200 opacity-90">
+                                Centro de Estudiantes | Derecho | UNLP
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Side Indicator Dot matching image -->
+                    <div class="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
+                        <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-black rounded-full shadow-md"></span>
+                    </div>
+                </div>
+
+                <!-- Quick Access Cards Below Hero -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+                    <div onclick="showSection('bibliografia')" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer flex items-center gap-4">
+                        <div class="p-4 bg-purple-50 text-[#4A0E17] rounded-lg">
+                            <i data-lucide="book-open" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-gray-900">Bibliografía Digital</h3>
+                            <p class="text-sm text-gray-500">Accedé a apuntes y resumenes por materia</p>
+                        </div>
+                    </div>
+
+                    <div onclick="showSection('programas')" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer flex items-center gap-4">
+                        <div class="p-4 bg-blue-50 text-blue-600 rounded-lg">
+                            <i data-lucide="file-text" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-gray-900">Programas de Estudio</h3>
+                            <p class="text-sm text-gray-500">Planes de cátedra y programas vigentes</p>
+                        </div>
+                    </div>
+
+                    <div onclick="sendWhatsApp('Consulta General')" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer flex items-center gap-4">
+                        <div class="p-4 bg-green-50 text-green-600 rounded-lg">
+                            <i data-lucide="message-circle" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-gray-900">Consultas por WhatsApp</h3>
+                            <p class="text-sm text-gray-500">Escribinos directamente al centro</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: BIBLIOGRAFIA -->
+        <section id="sec-bibliografia" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="mb-8 border-b pb-4">
+                <h2 class="font-oswald text-4xl font-bold text-[#4A0E17] uppercase">Bibliografía Digital</h2>
+                <p class="text-gray-600">Encontrá el material de lectura obligatorio y complementario organizado por año de la carrera.</p>
+            </div>
+
+            <!-- Subject Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Subject Item -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:border-[#4A0E17] transition-all">
+                    <div class="bg-[#4A0E17] text-white p-4">
+                        <span class="text-xs font-semibold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded">Primer Año</span>
+                        <h3 class="font-bold text-xl mt-1">Derecho Romano</h3>
+                    </div>
+                    <div class="p-5 space-y-3">
+                        <div class="flex items-center justify-between text-sm py-2 border-b">
+                            <span class="font-medium text-gray-700">Manual de Derecho Romano</span>
+                            <button onclick="sendWhatsApp('Bibliografía: Manual de Derecho Romano')" class="text-blue-600 hover:underline flex items-center gap-1">
+                                <i data-lucide="download" class="w-4 h-4"></i> Pedir PDF
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between text-sm py-2 border-b">
+                            <span class="font-medium text-gray-700">Guía de Apuntes Cátedra 1</span>
+                            <button onclick="sendWhatsApp('Bibliografía: Guía Apuntes Cátedra 1 Romano')" class="text-blue-600 hover:underline flex items-center gap-1">
+                                <i data-lucide="download" class="w-4 h-4"></i> Pedir PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subject Item -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:border-[#4A0E17] transition-all">
+                    <div class="bg-[#4A0E17] text-white p-4">
+                        <span class="text-xs font-semibold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded">Segundo Año</span>
+                        <h3 class="font-bold text-xl mt-1">Derecho Civil I (Parte General)</h3>
+                    </div>
+                    <div class="p-5 space-y-3">
+                        <div class="flex items-center justify-between text-sm py-2 border-b">
+                            <span class="font-medium text-gray-700">Código Civil y Comercial</span>
+                            <button onclick="sendWhatsApp('Bibliografía: Código Civil y Comercial')" class="text-blue-600 hover:underline flex items-center gap-1">
+                                <i data-lucide="download" class="w-4 h-4"></i> Pedir PDF
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between text-sm py-2 border-b">
+                            <span class="font-medium text-gray-700">Resumen Fallos Obligatorios</span>
+                            <button onclick="sendWhatsApp('Bibliografía: Fallos Civil 1')" class="text-blue-600 hover:underline flex items-center gap-1">
+                                <i data-lucide="download" class="w-4 h-4"></i> Pedir PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subject Item -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:border-[#4A0E17] transition-all">
+                    <div class="bg-[#4A0E17] text-white p-4">
+                        <span class="text-xs font-semibold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded">Tercer Año</span>
+                        <h3 class="font-bold text-xl mt-1">Derecho Penal I</h3>
+                    </div>
+                    <div class="p-5 space-y-3">
+                        <div class="flex items-center justify-between text-sm py-2 border-b">
+                            <span class="font-medium text-gray-700">Tratado de Derecho Penal</span>
+                            <button onclick="sendWhatsApp('Bibliografía: Tratado Penal I')" class="text-blue-600 hover:underline flex items-center gap-1">
+                                <i data-lucide="download" class="w-4 h-4"></i> Pedir PDF
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between text-sm py-2 border-b">
+                            <span class="font-medium text-gray-700">Teoría del Delito - Guía</span>
+                            <button onclick="sendWhatsApp('Bibliografía: Teoría del Delito')" class="text-blue-600 hover:underline flex items-center gap-1">
+                                <i data-lucide="download" class="w-4 h-4"></i> Pedir PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: PROGRAMAS -->
+        <section id="sec-programas" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="mb-8 border-b pb-4">
+                <h2 class="font-oswald text-4xl font-bold text-[#4A0E17] uppercase">Programas de Cátedra</h2>
+                <p class="text-gray-600">Consultá los contenidos, correlatividades y criterios de evaluación oficial de la UNLP.</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100 text-gray-700 uppercase text-xs font-bold border-b">
+                            <th class="p-4">Materia</th>
+                            <th class="p-4">Cátedra</th>
+                            <th class="p-4">Año</th>
+                            <th class="p-4 text-right">Programa</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 text-sm">
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-4 font-semibold text-gray-900">Introducción al Derecho</td>
+                            <td class="p-4 text-gray-600">Cátedra 1 (Álvarez)</td>
+                            <td class="p-4 text-gray-600">1° Año</td>
+                            <td class="p-4 text-right">
+                                <button onclick="sendWhatsApp('Programa: Introducción al Derecho Cátedra 1')" class="px-3 py-1 bg-[#4A0E17] text-white rounded hover:bg-opacity-90 text-xs font-medium">
+                                    Solicitar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-4 font-semibold text-gray-900">Derecho Constitucional</td>
+                            <td class="p-4 text-gray-600">Cátedra 2 (García)</td>
+                            <td class="p-4 text-gray-600">2° Año</td>
+                            <td class="p-4 text-right">
+                                <button onclick="sendWhatsApp('Programa: Derecho Constitucional Cátedra 2')" class="px-3 py-1 bg-[#4A0E17] text-white rounded hover:bg-opacity-90 text-xs font-medium">
+                                    Solicitar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-4 font-semibold text-gray-900">Derecho Procesal I</td>
+                            <td class="p-4 text-gray-600">Cátedra Única</td>
+                            <td class="p-4 text-gray-600">3° Año</td>
+                            <td class="p-4 text-right">
+                                <button onclick="sendWhatsApp('Programa: Derecho Procesal I')" class="px-3 py-1 bg-[#4A0E17] text-white rounded hover:bg-opacity-90 text-xs font-medium">
+                                    Solicitar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECTION: QUIENES SOMOS -->
+        <section id="sec-quienes-somos" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="bg-white rounded-2xl p-8 sm:p-12 shadow-sm border border-gray-200">
+                <h2 class="font-oswald text-4xl font-bold text-[#4A0E17] uppercase mb-4">¿Quiénes Somos?</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                    Somos la <strong>Franja Morada</strong>, conducción del Centro de Estudiantes de la Facultad de Ciencias Jurídicas y Sociales de la Universidad Nacional de La Plata (UNLP).
+                </p>
+                <p class="text-gray-600 leading-relaxed mb-8">
+                    Trabajamos día a día para defender la educación pública, gratuita, laica y de calidad, acompañándote durante toda tu carrera universitaria con tutorías, apuntes, trámites y representación estudiantil.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-gray-100">
+                    <div class="p-4 bg-gray-50 rounded-xl text-center">
+                        <i data-lucide="graduation-cap" class="w-10 h-10 text-[#4A0E17] mx-auto mb-2"></i>
+                        <h3 class="font-bold text-gray-900">Acompañamiento</h3>
+                        <p class="text-xs text-gray-500 mt-1">Tutorías para ingresantes y estudiantes avanzados.</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl text-center">
+                        <i data-lucide="shield-check" class="w-10 h-10 text-[#4A0E17] mx-auto mb-2"></i>
+                        <h3 class="font-bold text-gray-900">Defensa de Derechos</h3>
+                        <p class="text-xs text-gray-500 mt-1">Representación gremial en los consejos de la facultad.</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl text-center">
+                        <i data-lucide="heart-handshake" class="w-10 h-10 text-[#4A0E17] mx-auto mb-2"></i>
+                        <h3 class="font-bold text-gray-900">Permanencia</h3>
+                        <p class="text-xs text-gray-500 mt-1">Becas de apuntes y comedor universitario.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Floating WhatsApp Button -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button onclick="sendWhatsApp('Consulta rápida desde la web')" class="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl flex items-center gap-3 transition-all hover:scale-105 active:scale-95" title="Contactar por WhatsApp">
+            <i data-lucide="message-circle" class="w-7 h-7 fill-current"></i>
+            <span class="hidden sm:inline font-bold pr-2 text-sm">Consultar por WhatsApp</span>
+        </button>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="search-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-start justify-center pt-20 px-4">
+        <div class="bg-white w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden transform transition-all">
+            <div class="p-4 border-b flex items-center gap-3">
+                <i data-lucide="search" class="w-6 h-6 text-gray-400"></i>
+                <input type="text" id="search-input" placeholder="Buscar resúmenes, materias o programas..." class="w-full text-lg outline-none text-gray-800 placeholder-gray-400">
+                <button onclick="closeSearchModal()" class="p-1 hover:bg-gray-100 rounded-lg text-gray-500">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-4 max-h-80 overflow-y-auto space-y-2">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Sugerencias rápidas</p>
+                <button onclick="selectSearchResult('Derecho Romano')" class="w-full text-left p-3 hover:bg-purple-50 rounded-lg flex justify-between items-center text-sm font-medium text-gray-700">
+                    <span>Derecho Romano (Apuntes)</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </button>
+                <button onclick="selectSearchResult('Derecho Civil I')" class="w-full text-left p-3 hover:bg-purple-50 rounded-lg flex justify-between items-center text-sm font-medium text-gray-700">
+                    <span>Derecho Civil I (Programa)</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </button>
+                <button onclick="selectSearchResult('Inscripción a Materias')" class="w-full text-left p-3 hover:bg-purple-50 rounded-lg flex justify-between items-center text-sm font-medium text-gray-700">
+                    <span>Guía SIU Guaraní</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-12 py-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="font-oswald text-xl font-bold tracking-wider mb-2">FRANJA MORADA DERECHO UNLP</p>
+            <p class="text-xs text-gray-400">Facultad de Ciencias Jurídicas y Sociales - Universidad Nacional de La Plata</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Phone number configuration for Franja Morada WhatsApp
+        const WHATSAPP_NUMBER = "5492210000000"; // Configurar número de WhatsApp real aquí
+
+        // Send WhatsApp Message Function
+        function sendWhatsApp(asunto) {
+            const mensaje = encodeURIComponent(`Hola Franja Morada! Quisiera hacer una consulta sobre: ${asunto}`);
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${mensaje}`;
+            window.open(url, '_blank');
+        }
+
+        // Section Routing Handler
+        function showSection(sectionId) {
+            const sections = ['inicio', 'bibliografia', 'programas', 'quienes-somos'];
+            sections.forEach(id => {
+                const el = document.getElementById(`sec-${id}`);
+                const navBtn = document.getElementById(`nav-${id}`);
+                
+                if (id === sectionId) {
+                    el.classList.remove('hidden');
+                    if (navBtn) {
+                        navBtn.classList.remove('text-gray-700');
+                        navBtn.classList.add('text-blue-600', 'font-bold');
+                    }
+                } else {
+                    el.classList.add('hidden');
+                    if (navBtn) {
+                        navBtn.classList.remove('text-blue-600', 'font-bold');
+                        navBtn.classList.add('text-gray-700');
+                    }
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Search Modal Functions
+        function openSearchModal() {
+            document.getElementById('search-modal').classList.remove('hidden');
+            document.getElementById('search-input').focus();
+        }
+
+        function closeSearchModal() {
+            document.getElementById('search-modal').classList.add('hidden');
+        }
+
+        function selectSearchResult(query) {
+            closeSearchModal();
+            sendWhatsApp(`Búsqueda: ${query}`);
+        }
+
+        // Close search on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSearchModal();
+        });
+    </script>
+</body>
+</html>
